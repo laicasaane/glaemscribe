@@ -28,6 +28,7 @@ GlaemscribeEditor = function()
     
   editor.mode     = null;
   editor.charset  = null;
+  editor.transcribed_text = "";
 
   delete CodeMirror.keyMap.pcDefault["Shift-Ctrl-F"]; // Replace 
   delete CodeMirror.keyMap.pcDefault["Shift-Ctrl-R"]; // Replace all
@@ -468,7 +469,8 @@ GlaemscribeEditor.prototype.installCallbacks = function()
   })
   $("#copy_to_clipboard_button").click(function() {
     
-    var text = $(".transcribed").text();
+    //var text = $(".transcribed").text();
+    var text = editor.transcribed_text;
     
     if (window.clipboardData && window.clipboardData.setData) {
       // IE specific code path to prevent textarea being shown while dialog is visible.
@@ -508,7 +510,8 @@ GlaemscribeEditor.prototype.installCallbacks = function()
     }
     
     var filename  = "glaem_transcript_" + getTimeStamp(new Date()) + ".txt";
-    var content   = $(".transcribed").text();
+    //var content   = $(".transcribed").text();
+    var content   = editor.transcribed_text;
   
     var dlink     = $('#save_transcription_to_txt_anchor');
     dlink.attr({
@@ -1034,7 +1037,14 @@ GlaemscribeEditor.prototype.genericRefreshTranscription = function(entry_selecto
       if(success)
       {
         editor.refreshFont(transcribed_selector, false);
-        transcribed_selector.html(ret);
+        editor.transcribed_text = ret;
+		
+		var lines = ret.split("\n");
+        var text = "";
+        lines.forEach(function(line) {
+            text += "<p class='transcribed-text'>" + line + "</p>";
+        });
+        transcribed_selector.html(text);
         
         if(debug_preprocessor_selector) 
           debug_preprocessor_selector.html(dbg_ctx.preprocessor_output);
