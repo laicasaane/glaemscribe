@@ -726,6 +726,12 @@ GlaemscribeEditor.prototype.serializeCurrentCharset = function()
       });
       content += "\\end\n\n"
     }
+    else if(c.is_sequence()) {
+      content += "\\beg seq " + c.names.join(" ") + "\n";
+      content += "  " + c.sequence.join(" ") + "\n";
+      content += "\\end\n\n"
+      
+    }
     else  
       content += "\\** " + c.str + " **\\ \\char " + parseInt(c.code).toString(16) + " " + c.names.join(" ") + "\n";
   }  
