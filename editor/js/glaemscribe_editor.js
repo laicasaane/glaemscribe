@@ -1043,9 +1043,10 @@ GlaemscribeEditor.prototype.genericRefreshTranscription = function(entry_selecto
       if(success)
       {
         editor.refreshFont(transcribed_selector, false);
+        //transcribed_selector.html(ret.replace(/\n/g,"<br/>"));
         editor.transcribed_text = ret;
 		
-		var lines = ret.split("\n");
+        var lines = ret.split("\n");
         var text = "";
         lines.forEach(function(line) {
             text += "<p class='transcribed-text'>" + line + "</p>";
